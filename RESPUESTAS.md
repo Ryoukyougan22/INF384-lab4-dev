@@ -36,17 +36,25 @@ Después de la corrección, en la ejecución ci #4, el gráfico muestra la secue
 - Link al commit: https://github.com/Ryoukyougan22/INF384-lab4-dev/commit/c871d3ca8db278a17c9155dbad4d9e6e4dc1c8fb
 - Corrección (una o más: mover de etapa / dejar como informativo / eliminar / ajustar configuración / modificar tests): Modificar tests y ajustar configuración. Diferenciar las transferencias exitosas de las rechazadas y establecer comprobaciones que permitan medir correctamente la tasa de éxito de las operaciones.
 - Evidencia (dato observado, con link al run o fragmento de la salida local): En la ejecución original ci #1, k6 registró 34 412 solicitudes HTTP, 100 % de checks exitosos y http_req_failed: 0.00%, utilizando la comprobación transferir 200 o 400.
+
 Después de la corrección, en ci #5, k6 completó 12 minutos de prueba con 30 usuarios virtuales máximos y registró los siguientes resultados:
-checks
+
 'rate>0.99' rate=100.00%
 http_req_duration
+
 'p(95)<500' p(95)=82.34ms
 http_req_failed
+
 'rate<0.01' rate=0.00%
+
 checks_succeeded: 100.00% 34412 out of 34412
+
 checks_failed:      0.00% 0 out of 34412
+
 transferir 200
+
 saldo 200
+
 Los resultados confirman que el escenario corregido utiliza la comprobación transferir 200 y aprobó todos los umbrales. No se observaron rechazos HTTP 400 en esta ejecución.
 
 ### Defecto 5

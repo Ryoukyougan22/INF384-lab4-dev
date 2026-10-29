@@ -8,6 +8,10 @@ on:
     paths-ignore: ['**.md']
   workflow_dispatch:
 
+concurrency:
+  group: pipeline-${{ github.repository }}
+  cancel-in-progress: false
+
 permissions:
   contents: read
 

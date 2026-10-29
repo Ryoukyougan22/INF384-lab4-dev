@@ -18,8 +18,12 @@ Presupuesto: [13] min  Métrica DORA: [time to restore]
 - Problema que causa en el pipeline: El script smoke.sh permite comprobar el commit desplegado mediante EXPECTED_COMMIT, pero el workflow no proporcionaba esta variable. Por tanto, la comprobación de la versión se omitía y el smoke test podía aprobar una versión diferente de la que se acababa de construir.
 - Link al commit: https://github.com/Ryoukyougan22/INF384-lab4-dev/commit/fe91df0ce8303b522b47444e5d7bebcb4083146a
 - Corrección (una o más: mover de etapa / dejar como informativo / eliminar / ajustar configuración / modificar tests): Ajustar configuración. Incorporar EXPECTED_COMMIT: ${{ github.sha }} en el entorno del paso Smoke para obligar a comprobar el commit desplegado.
-- Evidencia (dato observado, con link al run o fragmento de la salida local): En la ejecución inicial ci #1, el job smoke finalizó sin mostrar la línea independiente de validación del commit. Después de la corrección, en la ejecución ci #3, el job smoke terminó exitosamente en 10 segundos y mostró:
+- Evidencia (dato observado, con link al run o fragmento de la salida local): En la ejecución inicial ci #1, el job smoke finalizó sin mostrar la línea independiente de validación del commit. Después de la corrección, en
+
+la ejecución ci #3, el job smoke terminó exitosamente en 10 segundos y mostró:
+
 salud: {"ok":true,"version":"1.0.0","commit":"fe91df0ce8303b522b47444e5d7bebcb4083146a"}
+
 commit: fe91df0ce8303b522b47444e5d7bebcb4083146a
 
 ### Defecto 3
@@ -28,6 +32,7 @@ commit: fe91df0ce8303b522b47444e5d7bebcb4083146a
 - Link al commit: https://github.com/Ryoukyougan22/INF384-lab4-dev/commit/ef15442cf1f2950fed9cd9ba1e155b0d8ce2d3b2
 - Corrección (una o más: mover de etapa / dejar como informativo / eliminar / ajustar configuración / modificar tests): Ajustar configuración. Hacer que load dependa de e2e para evitar que las pruebas de carga y las pruebas funcionales se ejecuten simultáneamente.
 - Evidencia (dato observado, con link al run o fragmento de la salida local): En la ejecución inicial ci #1, el gráfico mostraba que e2e (43 s) y load (12 min 10 s) dependían directamente de smoke, permitiendo su ejecución paralela.
+
 Después de la corrección, en la ejecución ci #4, el gráfico muestra la secuencia smoke → e2e → load. El job smoke finalizó en 7 segundos y e2e en 40 segundos. Solo después comenzó load, que se encontraba en ejecución al momento de la captura. Esto confirma que ambos jobs ya no se ejecutan simultáneamente dentro del mismo run.
 
 ### Defecto 4
@@ -63,9 +68,13 @@ Los resultados confirman que el escenario corregido utiliza la comprobación tra
 - Link al commit: https://github.com/Ryoukyougan22/INF384-lab4-dev/commit/8acb57fce9b9b86411a05eb865be76bde2250c76
 - Corrección (una o más: mover de etapa / dejar como informativo / eliminar / ajustar configuración / modificar tests): Ajustar configuración. Agregar una política de concurrency a nivel del workflow completo, utilizando un grupo por repositorio y cancel-in-progress: false, sin modificar el job deploy.
 - Evidencia (dato observado, con link al run o fragmento de la salida local):  En la configuración original de ci.yml, líneas 175–177, concurrency estaba definido únicamente dentro del job deploy. Después de la corrección, el commit 8acb57f muestra la incorporación de las siguientes líneas a nivel global:
+
 concurrency:
+
   group: pipeline-${{ github.repository }}
+
   cancel-in-progress: false
+
 En la ejecución ci #6, correspondiente al commit 8acb57f, se observa que los jobs unit, integration, sast, sca, build-push, deploy, smoke, e2e y load finalizaron correctamente. Enlace del run ci #6: https://github.com/Ryoukyougan22/INF384-lab4-dev/actions/runs/40963836648
 
 

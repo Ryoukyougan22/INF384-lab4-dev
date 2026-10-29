@@ -124,9 +124,9 @@ Cambios para cumplir el presupuesto:
 |Reducir SLO_P95 de 500 a 150 ms | load | 0:00 |
 |Mantener SAST obligatorio en pre-build | sast | 0:00 |
 
-Total resultante: 11:14 minutos, inferior al presupuesto de 13 minutos.
+Total resultante: 10:49 minutos, inferior al presupuesto de 13 minutos.
 
-Link al run en main con los cambios:
+Link al run en main con los cambios: https://github.com/Ryoukyougan22/INF384-lab4-dev/actions/runs/40968103542
 
 Riesgo aceptado (defecto de la aplicación concreto y efecto en la métrica DORA asignada):
 

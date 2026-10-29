@@ -1,4 +1,4 @@
-<img width="1920" height="984" alt="{EB827E86-F037-4DCB-8449-70D652422926}" src="https://github.com/user-attachments/assets/aa3ff3c3-a614-41c4-84da-adc91587841f" /># Respuestas · Laboratorio 4
+
 Alumno: [20210477]
 Presupuesto: [13] min  Métrica DORA: [time to restore]
 

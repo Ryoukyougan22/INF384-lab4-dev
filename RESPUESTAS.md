@@ -102,6 +102,7 @@ SLA propuesto y diferencia con el SLO: Se propone un SLA de latencia HTTP p95 in
 
 Cambios para cumplir el presupuesto:
 | Cambio | Job | Minutos recuperados |
+|---|---|---|
 |Reducir la prueba de carga de 12 a 8 minutos, manteniendo 6 minutos de carga constante | load | 4:00 estimados |
 |Reducir SLO_P95 de 500 a 150 ms | load | 0:00 |
 |Mantener SAST obligatorio en pre-build | sast | 0:00 |
@@ -110,9 +111,12 @@ Total resultante: [ ] min
 Link al run en main con los cambios:
 
 Riesgo aceptado (defecto de la aplicación concreto y efecto en la métrica DORA asignada):
+
 Al reducir la prueba de carga de 12 a 8 minutos, se acepta el riesgo de no detectar defectos de rendimiento que se manifiesten únicamente después de periodos prolongados de uso. Por ejemplo, una fuga de recursos introducida en el procesamiento de transferencias de src/wallet.js podría provocar errores HTTP 500 después de nueve minutos de carga sostenida. El pipeline original podría detectar ese problema, mientras que el optimizado terminaría antes de que se manifieste. Respecto a la métrica DORA Time to Restore, la reducción permite validar más rápidamente los cambios destinados a recuperar el servicio. Sin embargo, también aumenta el riesgo de declarar una recuperación satisfactoria sin haber detectado un problema tardío, lo que podría provocar nuevos incidentes y prolongar el tiempo real de recuperación.
 
-Decisión sobre sast (se queda / se mueve a otra etapa o evento / informativo) y razón: Se decide mantener SAST obligatorio en pre-build. En ci #6 su duración fue de solo 24 segundos, por lo que el ahorro potencial de eliminarlo es reducido en comparación con el riesgo de permitir el despliegue de código con vulnerabilidades detectables mediante análisis estático. Mantener esta comprobación favorece una recuperación más confiable, evitando que una corrección urgente introduzca nuevos problemas de seguridad que puedan extender el Time to Restore.
+Decisión sobre sast (se queda / se mueve a otra etapa o evento / informativo) y razón: 
+
+Se decide mantener SAST obligatorio en pre-build. En ci #6 su duración fue de solo 24 segundos, por lo que el ahorro potencial de eliminarlo es reducido en comparación con el riesgo de permitir el despliegue de código con vulnerabilidades detectables mediante análisis estático. Mantener esta comprobación favorece una recuperación más confiable, evitando que una corrección urgente introduzca nuevos problemas de seguridad que puedan extender el Time to Restore.
 
 ## Declaración de uso de IA
 Herramientas usadas y para qué: Se utilizó ChatGPT (OpenAI) como herramienta de apoyo para comprender los conceptos de CI/CD, GitHub Actions, AWS Lambda y pruebas automatizadas; analizar los defectos del pipeline; proponer y explicar las correcciones; interpretar los resultados de los logs y las pruebas de carga con k6; y apoyar la redacción y justificación de las respuestas del laboratorio. Las modificaciones del repositorio, la ejecución de los workflows y la recopilación de evidencias se realizaron mediante GitHub y AWS Academy.
